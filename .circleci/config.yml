@@ -1,5 +1,5 @@
 version: 2.1
- # aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --recursive
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.  
@@ -8,6 +8,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+              aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --recursive
               aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:5}
               aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:5}
 
@@ -134,11 +135,11 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - restore_cache:
+         keys: [infrastructure-deploy]
       - add_ssh_keys:
             fingerprints: 
               - "2c:23:16:05:7b:d4:ae:55:d7:7c:ad:93:bc:ad:d0:38" # You can get this ID in the section where you registered the SSH Key
-      - restore_cache:
-         keys: [infrastructure-deploy]
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -161,7 +162,7 @@ jobs:
               --region us-east-1
       - run:
            command: |
-                sleep 4m          
+                sleep 1m          
       - run: yum -y install tar gzip      
       - run:
           name: Add back-end ip to ansible inventory
@@ -184,11 +185,14 @@ jobs:
       - image: cimg/python:3.11.0
     steps:
       - checkout
+      - restore_cache:
+         keys: [infrastructure-configure]
       - add_ssh_keys:
             fingerprints: 
               - "2c:23:16:05:7b:d4:ae:55:d7:7c:ad:93:bc:ad:d0:38" # You can get this ID in the section where you registered the SSH Key
       - attach_workspace:
           at: /tmp/workspace
+      - run: apk add --no-cache aws-cli    
       - run:
           name: Install dependencies
           command: |
@@ -200,17 +204,21 @@ jobs:
               cd .circleci/ansible
               ansible-playbook -i /tmp/workspace/inventory.txt configure-server.yml
       - destroy-environment
-  run-migrations:
+ 
+ run-migrations:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+         keys: [infrastructure-configure]
+      - run: apk add --no-cache aws-cli
       - run:
           name: Run migrations
           command: |
             cd backend
             npm install
-            npm run migrations > /tmp/workspace/migrations_dump.txt
+            npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
           command: |
