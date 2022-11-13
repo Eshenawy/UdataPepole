@@ -160,6 +160,17 @@ jobs:
               --tags Key=project,Value=udapeople \
               --region us-east-1
               
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
+              --filters "Name=tag:project,Values=udapeople" \
+              --region us-east-1 \
+              --output text >> ~/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt         
       - destroy-environment
 workflows:
   default:
