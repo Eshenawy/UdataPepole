@@ -165,15 +165,15 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            mkdir -p /project/udatapepole
-            cd /project/udatapepole/
+            mkdir -p /tmp/workspace
+            cd /tmp/workspace
             echo "[web]" >> inventory.txt
             aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
               --filters "Name=tag:project,Values=udapeople" \
               --region us-east-1 \
-              --output text >> /project/udatapepole/inventory.txt
+              --output text >> /tmp/workspace/inventory.txt
       - persist_to_workspace:
-          root: /project/udatapepole
+          root: /tmp/workspace
           paths:
             - inventory.txt         
       - destroy-environment
@@ -187,7 +187,7 @@ jobs:
             fingerprints: 
               - "2c:23:16:05:7b:d4:ae:55:d7:7c:ad:93:bc:ad:d0:38" # You can get this ID in the section where you registered the SSH Key
       - attach_workspace:
-          at: /project/udatapepole
+          at: /tmp/workspace
       - run:
           name: Install dependencies
           command: |
@@ -195,7 +195,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-              cat /project/udatapepole/inventory.txt
+              cat /tmp/workspace/inventory.txt
       - destroy-environment      
  
       
