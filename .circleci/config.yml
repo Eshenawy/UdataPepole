@@ -145,7 +145,8 @@ jobs:
             aws cloudformation create-stack \
                 --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
                 --template-body file://.circleci/files/backend.yml \
-                 --parameters ParameterKey=ID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7} \
+                --parameters ParameterKey=ID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7} \
+                --tags Key=project,Value=udapeople \
                 --region us-east-1    
               
               
@@ -155,8 +156,8 @@ jobs:
             aws cloudformation create-stack \
               --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
               --template-body file://.circleci/files/frontend.yml \
-              --tags project=udapeople
               --parameters ParameterKey=ID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7} \
+              --tags Key=project,Value=udapeople \
               --region us-east-1
               
       - destroy-environment
