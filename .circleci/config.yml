@@ -185,7 +185,7 @@ jobs:
     steps:
       - checkout
       - run: sudo apt-get update
-      - run: apk add --no-cache aws-cli
+      - run: sudo apt-get install --assume-yes awscli
       - restore_cache:
          keys: [infrastructure-configure]
       - add_ssh_keys:
@@ -213,7 +213,7 @@ jobs:
       - restore_cache:
          keys: [infrastructure-configure]
       - run: sudo apt-get update   
-      - run: apk add --no-cache aws-cli
+      - run: sudo apt-get install --assume-yes awscli
       - run:
           name: Run migrations
           command: |
