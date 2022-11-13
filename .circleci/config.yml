@@ -198,8 +198,9 @@ jobs:
           name: Configure server
           command: |
               cat /tmp/workspace/inventory.txt
-      - destroy-environment      
- 
+              cd .circleci/ansible
+              ansible-playbook -i /tmp/workspace/inventory.txt configure-server.yml
+      - destroy-environment
       
 workflows:
   default:
