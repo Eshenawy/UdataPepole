@@ -60,7 +60,6 @@ jobs:
           name: Back-end build
           command: |
             cd frontend
-            npm cache clean --force
             npm install
             npm run build
             
@@ -96,7 +95,6 @@ jobs:
           name: run frontend frontend
           command: |
             cd backend
-            npm cache clean --force
             npm install
             npm run test
       - save_cache:
@@ -213,16 +211,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-         keys: [infrastructure-configure]
+          keys: [backend-build]
       - run: sudo apt-get update   
       - run: sudo apt-get install --assume-yes awscli
       - run:
           name: Run migrations
           command: |
             cd backend
-            npm cache clean --force
             npm install
-            npm update
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
