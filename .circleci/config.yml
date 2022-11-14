@@ -8,8 +8,8 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-              aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:5}
-              aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:5}
+              aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -223,11 +223,11 @@ jobs:
             echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
             echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
             echo NODE_ENV=production >> "backend/.env"
-            echo TYPEORM_HOST=db-udapepole.c7baqj0tign2.us-east-1.rds.amazonaws.com >> "backend/.env"
+            echo TYPEORM_HOST=database-1.c7baqj0tign2.us-east-1.rds.amazonaws.com >> "backend/.env"
             echo TYPEORM_PORT=5432 >> "backend/.env"
-            echo TYPEORM_USERNAME=udapepole >> "backend/.env"
-            echo TYPEORM_PASSWORD=0118638908uda >> "backend/.env"
-            echo TYPEORM_DATABASE=db-udapepole >> "backend/.env"
+            echo TYPEORM_USERNAME=postgres >> "backend/.env"
+            echo TYPEORM_PASSWORD=12345678 >> "backend/.env"
+            echo TYPEORM_DATABASE=database-1 >> "backend/.env"
             cat backend/.env
       - run:
           name: Run migrations
