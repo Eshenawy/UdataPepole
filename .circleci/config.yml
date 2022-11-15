@@ -256,6 +256,12 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Install tar utility
+          command: |
+            sudo apt-get install -y tar gzip
       - run:
           name: Install dependencies
           command: |
@@ -304,3 +310,5 @@ workflows:
           requires: [deploy-infrastructure] 
       - run-migrations:
           requires: [configure-infrastructure]    
+      - deploy-frontend:
+          requires: [run-migrations]    
