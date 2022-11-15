@@ -251,6 +251,37 @@ jobs:
               echo "Test"
             fi
       - destroy-environment 
+  deploy-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+              sudo apt-get update   
+              sudo apt-get install --assume-yes awscli
+      - run:
+          name: Get backend url
+          command: |
+            export BACKEND_IP==$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+              --filters "Name=tag:project,Values=udapeople" \
+              --region us-east-1)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "API_URL = ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
+      - run:
+          name: Deploy frontend objects
+          command: |
+              cd frontend
+              npm install
+              npm run build
+              tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+              aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+              
+      - destroy-environment
+    
 workflows:
   default:
     jobs:
