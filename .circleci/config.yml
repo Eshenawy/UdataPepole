@@ -227,7 +227,7 @@ jobs:
             echo TYPEORM_PORT=5432 >> "backend/.env"
             echo TYPEORM_USERNAME=postgres >> "backend/.env"
             echo TYPEORM_PASSWORD=12345678 >> "backend/.env"
-            echo TYPEORM_DATABASE=database-2 >> "backend/.env"
+            echo TYPEORM_DATABASE=dbname >> "backend/.env"
             cat backend/.env
       - run:
           name: Run migrations
