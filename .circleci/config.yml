@@ -242,8 +242,13 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               echo https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7}
+              echo "Test"
               curl https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              echo "Test"
+              echo $KVDB_ACCESS_KEY
+              echo "Test"
               echo https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7}
+              echo "Test"
             fi
       - destroy-environment 
 workflows:
