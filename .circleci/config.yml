@@ -291,7 +291,7 @@ jobs:
     
   deploy-backend:
     docker:
-      - image: cimg/python:3.11.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add_ssh_keys:
@@ -299,10 +299,14 @@ jobs:
               - "2c:23:16:05:7b:d4:ae:55:d7:7c:ad:93:bc:ad:d0:38" # You can get this ID in the section where you registered the SSH Key
       - attach_workspace:
          at: /tmp/workspace
+      - run: sudo apt-get update
+      - run: sudo apt-get install --assume-yes awscli   
       - run:
           name: Install ansible
           command: |
-            pip install --user ansible
+            sudo apt-get update
+            sudo apt-get upgrade -y
+            sudo apt-get install python -y
       - run:
           name: Deploy backend
           command: |   
