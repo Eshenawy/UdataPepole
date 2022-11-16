@@ -307,13 +307,6 @@ jobs:
           name: Install tar
           command: |
             pip install --user ./Downloads/PyGUI-2.5.4.tar.gz 
-      - run:
-          name: Install ansible
-          command: | 
-      - run:
-          name: Deploy backend
-          command: |
-      # Here's where you will add some code to rollback on failure 
     
     
     
