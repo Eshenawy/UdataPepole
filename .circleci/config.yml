@@ -306,9 +306,10 @@ jobs:
       - run:
           name: Install tar
           command: |
-            pip install --user ./Downloads/PyGUI-2.5.4.tar.gz 
-    
-    
+            pip install ./Package-1.0.4.tar.gz
+            tar -xzvf PyGUI-2.5.4.tar.gz
+            cd PyGUI-2.5.4.tar.gz
+            python setup.py install
     
 workflows:
   default:
