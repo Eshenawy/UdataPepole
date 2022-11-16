@@ -311,16 +311,19 @@ jobs:
             sudo apt-get install python -y
       - run:
           name: Deploy backend
-          command: |   
+          command: |  
+            cd backend
             npm i
             npm run build
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
+            ls
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat /tmp/workspace/inventory.txt
             ansible-playbook -i /tmp/workspace/inventory.txt deploy-backend.yml
+            ls
 workflows:
   default:
     jobs:
