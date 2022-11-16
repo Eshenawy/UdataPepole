@@ -29,11 +29,3 @@
     global: yes
     production: yes
     state: present
-
-- name: "install python"
-  become: yes
-  npm:
-    name: python3.7
-    global: yes
-    production: yes
-    state: present
