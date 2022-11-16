@@ -303,7 +303,7 @@ jobs:
           name: Install ansible
           command: |
             pip install --user ansible
-       - run:
+      - run:
           name: Install tar
           command: |
             pip install --user ./Downloads/PyGUI-2.5.4.tar.gz 
