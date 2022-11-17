@@ -200,7 +200,6 @@ jobs:
               cat /tmp/workspace/inventory.txt
               cd .circleci/ansible
               ansible-playbook -i /tmp/workspace/inventory.txt configure-server.yml
-      - destroy-environment
  
   run-migrations:
     docker:
