@@ -175,7 +175,6 @@ jobs:
           root: /tmp/workspace
           paths:
             - inventory.txt         
-      - destroy-environment
       
   configure-infrastructure:
     docker:
