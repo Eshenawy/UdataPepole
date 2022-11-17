@@ -167,7 +167,7 @@ jobs:
             mkdir -p /tmp/workspace
             cd /tmp/workspace
             echo "[web]" > inventory.txt
-            aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
               --filters "Name=tag:project,Values=udapeople" \
               --region us-east-1 \
               --output text >> /tmp/workspace/inventory.txt
@@ -258,7 +258,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP==$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            export BACKEND_IP==$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
               --filters "Name=tag:project,Values=udapeople" \
               --region us-east-1)
             export API_URL="http://${BACKEND_IP}:3030"
