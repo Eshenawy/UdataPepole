@@ -134,8 +134,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - restore_cache:
-         keys: [infrastructure-deploy]
       - add_ssh_keys:
             fingerprints: 
               - "2c:23:16:05:7b:d4:ae:55:d7:7c:ad:93:bc:ad:d0:38" # You can get this ID in the section where you registered the SSH Key
@@ -169,7 +167,7 @@ jobs:
             mkdir -p /tmp/workspace
             cd /tmp/workspace
             echo "[web]" > inventory.txt
-            aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
+            aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicIpAddress]" \
               --filters "Name=tag:project,Values=udapeople" \
               --region us-east-1 \
               --output text >> /tmp/workspace/inventory.txt
