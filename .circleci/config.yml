@@ -44,7 +44,7 @@ jobs:
             export BACKEND_IP="     
             Ozey"
             echo "${BACKEND_IP}"
-            trim ${BACKEND_IP}
+            Trim ${BACKEND_IP}
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
