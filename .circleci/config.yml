@@ -330,8 +330,10 @@ jobs:
               export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
               --filters "Name=tag:project,Values=udapeople" \
               --region us-east-1 --output text)
+              echo "${BACKEND_IP}"
               export API_URL="http://${BACKEND_IP}:3030"
-              echo "${API_URL}"
+              echo "API_URL = ${API_URL}"
+              sleep 20
               if curl "${API_URL}/api/status" | grep "ok"
               then
                   return 0
