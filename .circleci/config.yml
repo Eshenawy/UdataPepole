@@ -371,7 +371,7 @@ jobs:
 workflows:
   default:
     jobs:
-      -test
+      - test
       - build-frontend
       - build-backend
       - test-frontend:
