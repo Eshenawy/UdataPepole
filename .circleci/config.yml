@@ -370,11 +370,7 @@ jobs:
               --no-paginate --region=us-east-1 --output text > /tmp/workspace/old-workflow-id.txt)
               echo OldID: "${OldWorkflowID}"
               echo CurrentID "${CIRCLE_WORKFLOW_ID:0:7}"
-              echo "${OldWorkflowID}" >> /tmp/workspace/old-workflow-id.txt    
-      - run:
-          name: Update cloudfront distribution
-          command: |
- 		          aws cloudformation create-stack --stack-name InitialStack --template-body .circleci/files/cloudfront.yml --parameters ParameterKey=WorkflowID,ParameterValue=udapeople-${CIRCLE_WORKFLOW_ID:0:7} --tags Key=project,Value=udapeople --region us-east-1      
+              echo "${OldWorkflowID}" >> /tmp/workspace/old-workflow-id.txt
       - revert-migrations      
       - destroy-environment     
 workflows:
