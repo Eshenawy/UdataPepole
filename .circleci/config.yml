@@ -7,7 +7,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-              #aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
+              aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
               aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
               aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -31,32 +31,6 @@ commands:
             fi
             
 jobs:
-  
-  test:
-    docker:
-      - image: alpine:latest 
-    steps:
-      - checkout
-      - run: apk add --update curl
-      - run: apk add --no-cache aws-cli
-      - run:
-          name: Backend smoke test.
-          command: |
-              export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" --region us-east-1 --output text)
-              echo "test"
-              echo "${BACKEND_IP}"
-              echo "test"
-              export API_URL="http://${BACKEND_IP}:3030"
-              echo "API_URL = ${API_URL}"
-              sleep 20
-              if curl "${API_URL}/api/status" | grep "ok"
-              then
-                  return 0
-              else
-                  return 1
-              fi
-  
-  
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -185,7 +159,7 @@ jobs:
               --region us-east-1
       - run:
            command: |
-                sleep 1m          
+                sleep 1m  
       - run: yum -y install tar gzip      
       - run:
           name: Add back-end ip to ansible inventory
@@ -279,9 +253,9 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP==$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
+            export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
               --filters "Name=tag:project,Values=udapeople" \
-              --region us-east-1)
+              --region us-east-1 --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
@@ -353,7 +327,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-              export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" --filters "Name=tag:project,Values=udapeople" --region us-east-1 | sed -r 's/\n//g' --output text)
+              export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" --filters "Name=tag:project,Values=udapeople" --region us-east-1 --output text)
               echo "test"
               echo "${BACKEND_IP}"
               echo "test"
@@ -382,7 +356,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - test
       - build-frontend
       - build-backend
       - test-frontend:
