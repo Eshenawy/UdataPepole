@@ -254,7 +254,7 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" \
-              --filters "Name=tag:project,Values=udapeople" \
+              --filters "Name=tag:project,Values=udapeople" --filters "Name=instance-state-name,Values=running" \
               --region us-east-1 --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
@@ -348,7 +348,7 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               echo ${URL}
-              return 1
+              return 0
             else
               return 1
             fi
