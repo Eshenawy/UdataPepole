@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-              export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" --region us-east-1 | sed -r 's/\n//g' --output text)
+              export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].[PublicDnsName]" --region us-east-1 --output text)
               echo "test"
               echo "${BACKEND_IP}"
               echo "test"
