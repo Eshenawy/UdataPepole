@@ -362,15 +362,13 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-         at: /tmp/workspace
-         
+         at: /tmp/workspace   
       - run:
             name: Fetch and save the old pipeline ID (bucket name) responsible for the last release.
             command: |
               export OldWorkflowID=$(aws s3api list-buckets \
               --query "Buckets[?Name=='mybucket-${CIRCLE_WORKFLOW_ID:0:7}'].Name" \
-              --region=us-east-1 \
-              --no-paginate --output text > /tmp/workspace/old-workflow-id.txt)
+              --no-paginate --region=us-east-1 --output text > /tmp/workspace/old-workflow-id.txt)
               echo OldID: "${OldWorkflowID}"
               echo CurrentID "${CIRCLE_WORKFLOW_ID:0:7}"
               echo "${OldWorkflowID}" >> /tmp/workspace/old-workflow-id.txt    
@@ -378,10 +376,11 @@ jobs:
           name: Update cloudfront distribution
           command: |
              aws cloudformation create-stack \
-		        --stack-name InitialStack \
-            --template-body .circleci/files/cloudfront.yml \
-		        --parameters ParameterKey=WorkflowID,ParameterValue=udapeople-${CIRCLE_WORKFLOW_ID:0:7} \
-		        --tags Key=project,Value=udapeople \
+	     --stack-name InitialStack \
+             --template-body .circleci/files/cloudfront.yml \
+	     --parameters ParameterKey=WorkflowID,ParameterValue=udapeople-${CIRCLE_WORKFLOW_ID:0:7} \
+	     --tags Key=project,Value=udapeople \
+	     --region us-east-1
             
       - revert-migrations      
       - destroy-environment     
