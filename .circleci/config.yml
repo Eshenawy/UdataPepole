@@ -12,23 +12,22 @@ commands:
               aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      # Add parameter here     
+    description: Revert the last migration if successfully run in the current workflow.  
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
-            if(( $SUCCESS==1 )); 
+            echo https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            SUCCESS=$(curl --insecure  https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7} -k)
+            if (( $SUCCESS == 1 ));
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
-            fi
+                cd ~/project/backend
+                npm install
+                npm run migration:revert
+            fi              
+            
+            
             
 jobs:
   build-frontend:
@@ -233,6 +232,7 @@ jobs:
               echo https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7}
               curl -d '1' https://kvdb.io/$KVDB_ACCESS_KEY/migration_${CIRCLE_WORKFLOW_ID:0:7} -k
             fi
+      - revert-migrations       
       - destroy-environment 
   deploy-frontend:
     docker:
@@ -268,7 +268,7 @@ jobs:
               npm run build
               tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
               aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
-              
+      - revert-migrations        
       - destroy-environment
   deploy-backend:
     docker:
@@ -315,6 +315,7 @@ jobs:
             cat /tmp/workspace/inventory.txt
             cd .circleci/ansible
             ansible-playbook -i /tmp/workspace/inventory.txt deploy-backend.yml
+      - revert-migrations       
       - destroy-environment
       
   smoke-test:
@@ -352,7 +353,38 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment         
+      - revert-migrations      
+      - destroy-environment
+      
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - attach_workspace:
+         at: /tmp/workspace
+         
+      - run:
+            name: Fetch and save the old pipeline ID (bucket name) responsible for the last release.
+            command: |
+              export OldWorkflowID=$(aws s3api list-buckets \
+              --query "Buckets[?Name=='mybucket-${CIRCLE_WORKFLOW_ID:0:7}'].Name" \
+              --region=us-east-1 \
+              --no-paginate --output text > /tmp/workspace/old-workflow-id.txt)
+              echo OldID: "${OldWorkflowID}"
+              echo CurrentID "${CIRCLE_WORKFLOW_ID:0:7}"
+              echo "${OldWorkflowID}" >> /tmp/workspace/old-workflow-id.txt    
+      - run:
+          name: Update cloudfront distribution
+          command: |
+             aws cloudformation create-stack \
+		        --stack-name InitialStack \
+            --template-body .circleci/files/cloudfront.yml \
+		        --parameters ParameterKey=WorkflowID,ParameterValue=udapeople-${CIRCLE_WORKFLOW_ID:0:7} \
+		        --tags Key=project,Value=udapeople \
+            
+      - revert-migrations      
+      - destroy-environment     
 workflows:
   default:
     jobs:
@@ -380,4 +412,6 @@ workflows:
       - deploy-backend:
           requires: [run-migrations]
       - smoke-test:
-          requires: [deploy-backend, deploy-frontend]    
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]    
