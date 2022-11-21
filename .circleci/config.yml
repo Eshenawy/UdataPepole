@@ -378,7 +378,7 @@ jobs:
             aws cloudformation create-stack \
               --stack-name InitialStack \
               --template-body file://.circleci/files/cloudfront.yml \
-              --parameters ParameterKey=WorkflowID,ParameterValue=udapeople-${CIRCLE_WORKFLOW_ID:0:7} \
+              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7} \
               --tags Key=project,Value=udapeople \
               --region us-east-1
               
