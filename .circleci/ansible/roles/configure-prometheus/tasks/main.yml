@@ -11,6 +11,13 @@
     dest: /usr/local/bin/prometheus
     remote_src: yes
     mode: '0777'
+   
+- name: "add node exporter configuration."
+  become: true
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/
+   
 
 - name: "enable prometheus service"
   become: true
