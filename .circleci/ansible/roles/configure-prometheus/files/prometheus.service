@@ -7,7 +7,7 @@ After=network-online.target
 User=root
 Type=simple
 ExecStart=/usr/local/bin/prometheus \
-    --config.file /usr/local/bin/prometheus.yml
+    --config.file /etc/prometheus/prometheus.yml
 
 [Install]
 WantedBy=multi-user.target
