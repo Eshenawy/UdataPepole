@@ -12,7 +12,7 @@
     remote_src: yes
     mode: '0777'
 
-- name: "enable node_exporter service"
+- name: "enable prometheus service"
   become: true
   systemd:
     state: restarted
