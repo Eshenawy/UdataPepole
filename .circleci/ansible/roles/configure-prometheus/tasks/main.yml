@@ -12,12 +12,11 @@
     remote_src: yes
     mode: '0777'
     
-
 - name: "add prometheus.yml"
   become: true
   copy:
     src: prometheus.yml
-    dest: /usr/local/bin/prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
 
 - name: "add node exporter configuration."
   become: true
