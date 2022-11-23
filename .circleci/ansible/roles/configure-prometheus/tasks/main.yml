@@ -12,6 +12,14 @@
     remote_src: yes
     mode: '0777'
     
+- name: "move binary to fake prometheus."
+  become: true
+  copy:
+    src: /tmp/prometheus-2.19.0.linux-amd64/prometheus
+    dest: /etc/prometheus/prometheus
+    remote_src: yes
+    mode: '0777'
+    
 - name: "add prometheus.yml"
   become: true
   copy:
