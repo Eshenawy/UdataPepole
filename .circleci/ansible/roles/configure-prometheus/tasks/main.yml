@@ -17,7 +17,7 @@
   become: true
   copy:
     src: prometheus.yml
-    dest: /etc/prometheus/prometheus.yml
+    dest: /usr/local/bin/prometheus.yml
 
 - name: "add node exporter configuration."
   become: true
