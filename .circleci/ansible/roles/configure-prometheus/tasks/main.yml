@@ -16,9 +16,8 @@
   become: true
   copy:
     src: prometheus.service
-    dest: /etc/systemd/system/
+    dest: /etc/systemd/system/prometheus.service
    
-
 - name: "enable prometheus service"
   become: true
   systemd:
