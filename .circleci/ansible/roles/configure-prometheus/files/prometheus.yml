@@ -26,5 +26,5 @@ scrape_configs:
   - job_name: "node"
     ec2_sd_configs:
       - access_key: AKIAX2U6TLBFMX66KYTK
-		    secret_key: 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
+        secret_key: Pu2AJmxu8gbXB4q5alytBfxVHQfQn6pc4V4K1ErK
         port: 9100     
