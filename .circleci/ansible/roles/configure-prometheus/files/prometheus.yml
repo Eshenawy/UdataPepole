@@ -28,5 +28,5 @@ scrape_configs:
     ec2_sd_configs:
       - region: {{ lookup('env', 'AWS_DEFAULT_REGION')}}
       	access_key: {{ lookup('env', 'AWS_ACCESS_KEY_ID')}}
-		    secret_key: {{ lookup('env', 'AWS_SECRET_ACCESS_KEY')}}
+	secret_key: {{ lookup('env', 'AWS_SECRET_ACCESS_KEY')}}
         port: 9100
