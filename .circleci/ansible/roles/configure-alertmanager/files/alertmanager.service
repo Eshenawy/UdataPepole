@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/alertmanager/alertmanager-0.23.0.linux-amd64 \
+    --config.file /alertmanager/alertmanager-0.23.0.linux-amd64/alertmanager.yml
+
+[Install]
+WantedBy=multi-user.target
