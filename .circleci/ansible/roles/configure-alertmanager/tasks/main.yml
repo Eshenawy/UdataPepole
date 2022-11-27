@@ -1,4 +1,4 @@
-- name: "install alertmanager"
+- name: "install alertmanager iin tmp"
   unarchive:
     src: https://github.com/prometheus/alertmanager/releases/download/v0.23.0/alertmanager-0.23.0.linux-amd64.tar.gz
     dest: /tmp
