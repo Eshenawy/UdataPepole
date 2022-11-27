@@ -22,8 +22,14 @@
   copy:
     src: prometheus.yml
     dest: /etc/prometheus/prometheus.yml
-
-- name: "add node exporter configuration."
+    
+- name: "add rule configuration."
+  become: true
+  copy:
+    src: rule.yml
+    dest:  /etc/prometheus/rule.yml
+    
+- name: "add prometheus configuration."
   become: true
   copy:
     src: prometheus.service
