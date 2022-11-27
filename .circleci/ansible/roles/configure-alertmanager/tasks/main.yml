@@ -12,13 +12,13 @@
 - name: "add prometheus configuration."
   become: true
   copy:
-    src: prometheus.service
-    dest: /etc/systemd/system/prometheus.service
+    src: alertmanager.service
+    dest: /etc/systemd/system/alertmanager.service
    
 - name: "enable prometheus service"
   become: true
   systemd:
     state: restarted
     daemon_reload: yes
-    name: prometheus
+    name: alertmanager
     enabled: yes
