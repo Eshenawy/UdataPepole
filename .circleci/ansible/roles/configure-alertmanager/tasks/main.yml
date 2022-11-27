@@ -1,13 +1,24 @@
-- name: Creates directory
-  file:
-    path: alertmanager
-    state: directory
-
 - name: "install alertmanager"
   unarchive:
     src: https://github.com/prometheus/alertmanager/releases/download/v0.23.0/alertmanager-0.23.0.linux-amd64.tar.gz
-    dest: /alertmanager
+    dest: /tmp
     remote_src: yes
+
+- name: "move binary to /usr/local/bin."
+  become: true
+  copy:
+    src: /tmp/alertmanager-0.23.0.linux-amd64/alertmanager
+    dest: /usr/local/bin/alertmanager
+    remote_src: yes
+    mode: '0777'
+    
+- name: "move binary to /usr/local/bin."
+  become: true
+  copy:
+    src: /tmp/alertmanager-0.23.0.linux-amd64/alertmanager.yml
+    dest: /usr/local/bin/alertmanager.yml
+    remote_src: yes
+    mode: '0777'
         
 - name: "add prometheus configuration."
   become: true
