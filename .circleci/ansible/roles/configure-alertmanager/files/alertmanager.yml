@@ -15,7 +15,7 @@ receivers:
     smarthost: smtp.gmail.com:587
     auth_username: 'Ozeyozoz@gmail.com'
     auth_identity: 'Ozeyozoz@gmail.com'
-    auth_password: 'fugzvwkmmaepdjyr'
+    auth_password: 'YourPassword'
 inhibit_rules:
   - source_match:
       severity: 'critical'
