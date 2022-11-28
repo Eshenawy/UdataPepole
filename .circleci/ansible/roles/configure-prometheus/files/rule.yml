@@ -10,7 +10,7 @@ groups:
       summary: "Instance is down now"
       description: " of job has been down for more than 5 minutes."
   - alert: HostOutOfMemory
-    expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+    expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 1 < 10
     for: 2m
     labels:
       severity: warning
