@@ -1,0 +1,7 @@
+http://ec2-3-93-240-82.compute-1.amazonaws.com:9090/
+http://ec2-3-93-240-82.compute-1.amazonaws.com:9100/
+http://ec2-3-93-240-82.compute-1.amazonaws.com:9093/#/alerts
+http://ec2-3-93-240-82.compute-1.amazonaws.com:3030/api/status
+http://udapeople-40aa4d7.s3-website-us-east-1.amazonaws.com/#/employees
+https://d2c602o71qpd0h.cloudfront.net/#/employees
+https://github.com/Eshenawy/UdataPepole
