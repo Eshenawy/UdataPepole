@@ -1,6 +1,0 @@
-https://github.com/Eshenawy/UdataPepole
-http://udapeople-5dc72dd.s3-website-us-east-1.amazonaws.com
-https://d1cxmob22vhpwo.cloudfront.net/
-http://ec2-3-83-147-251.compute-1.amazonaws.com:3030/api/status
-http://ec2-3-83-147-251.compute-1.amazonaws.com:9090/
-
