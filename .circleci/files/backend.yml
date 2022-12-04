@@ -40,8 +40,8 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup
-      KeyName: lab2
-      ImageId: ami-08c40ec9ead489434 
+      KeyName: lab
+      ImageId: ami-08c40ec9ead489470 
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
