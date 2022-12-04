@@ -41,7 +41,7 @@ Resources:
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: lab2
-      ImageId: ami-08c40ec9ead489470 
+      ImageId: ami-08c40ec9ead489434 
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
